@@ -1,34 +1,52 @@
-# Ubiquiti Device Discovery Tool (Modern Java Compatibility Patch)
+# Ubiquiti Device Discovery Tool (Modern Suite)
 
-Versión reparada y adaptada de **Ubiquiti Device Discovery Tool v2.5.1** para ser compatible con versiones modernas de Java (Java 9, 11, 17, 21, 27+).
+Este repositorio contiene las soluciones completas y actualizadas para descubrir y administrar dispositivos Ubiquiti (antenas airMAX, equipos UniFi, routers EdgeMAX, airFiber, etc.) tanto en **Java Moderno** como en **Google Chrome**.
 
-## Causa del problema
-El archivo original `ubnt-discovery-v2.5.1.jar` fue ofuscado con **yGuard 2.0.3**, el cual renombraba variables y métodos con nombres que contenían puntos (ej. `this.super`, `int.Object`, etc.). Las versiones clásicas de Java (Java 8 y anteriores) lo permitían, pero a partir de **Java 9** la JVM valida estrictamente la especificación **JVMS §4.2.2**, arrojando el error:
+---
 
-```text
-Exception in thread "main" java.lang.ClassFormatError: Illegal field name "this.super" in class com/OoOO/super/A/o0oO
+## 🚀 1. Extensión para Google Chrome / Chromium (Recomendada)
+Revive la experiencia de la clásica extensión de Chrome con una interfaz moderna y soporte completo para Manifest V3.
+
+### Instalación en 1 solo paso:
+Ejecuta el script instalador en tu terminal:
+```bash
+./install.sh
 ```
+El instalador se encarga automáticamente de:
+1. Registrar el conector nativo UDP (puerto 10001) en Chrome, Chromium, Brave, Edge y Vivaldi.
+2. Comprobar la conexión en tiempo real con los dispositivos de tu red.
 
-## Solución implementada
-El script `patch_discovery.py` lee el *Constant Pool* de todas las clases dentro del JAR y reemplaza los puntos en nombres de campos, métodos y descriptores `NameAndType` por guiones bajos (`_`), preservando la estructura y el tamaño del bytecode sin requerir recompilación ni código fuente original.
+### Activar la extensión en Chrome (solo la primera vez):
+1. Abre tu navegador y dirígete a `chrome://extensions`.
+2. Activa el interruptor **Modo de desarrollador** (esquina superior derecha).
+3. Haz clic en **Cargar descomprimida** (*Load unpacked*).
+4. Selecciona la carpeta `chrome-extension` de este repositorio.
 
-## Requisitos
-- Java JRE/JDK 8, 11, 17, 21, 27 o superior.
-- Python 3 (únicamente si se desea volver a ejecutar el parcheador).
+¡Listo! Tendrás el icono oficial de Ubiquiti Discovery en tu barra de herramientas.
 
-## Ejecución
-Puede ejecutarse mediante el script:
+---
+
+## ☕ 2. Versión de Escritorio JAR (Java 9, 11, 17, 21, 27+)
+Corrige el error histórico de `ClassFormatError: Illegal field name "this.super"` provocado por ofuscadores antiguos (yGuard 2.0.3) al validar la especificación JVMS §4.2.2 en versiones modernas de Java.
+
+### Ejecución:
 ```bash
 ./run.sh
 ```
-
-O directamente con Java:
+O directamente:
 ```bash
 java -jar ubnt-discovery-v2.5.1.jar
 ```
 
-## Estructura de archivos
-- `ubnt-discovery-v2.5.1.jar`: Archivo JAR ya parcheado y funcional.
-- `ubnt-discovery-v2.5.1.jar.original`: Respaldo del archivo JAR original sin modificar.
-- `patch_discovery.py`: Script en Python utilizado para corregir el bytecode en el constant pool.
-- `run.sh`: Script ejecutable para lanzar la herramienta.
+---
+
+## 📁 Estructura del Proyecto
+* [chrome-extension/](file:///home/ibarra/Desktop/discovery-to-java-new/chrome-extension/): Extensión completa Manifest V3 con interfaz moderna y soporte Native Messaging.
+  * `ubnt_host.py`: Conector nativo UDP que escanea en el puerto 10001 por broadcast L2.
+  * `popup.html`, `popup.css`, `popup.js`: Interfaz de usuario con tema oscuro tipo UniFi, búsqueda en tiempo real, detalles y exportación.
+  * `manifest.json`: Manifiesto V3 con clave determinista permanente.
+* [install.sh](file:///home/ibarra/Desktop/discovery-to-java-new/install.sh): Script de instalación automática del conector de Chrome.
+* [ubnt-discovery-v2.5.1.jar](file:///home/ibarra/Desktop/discovery-to-java-new/ubnt-discovery-v2.5.1.jar): JAR de escritorio ya reparado y funcional.
+* [ubnt-discovery-v2.5.1.jar.original](file:///home/ibarra/Desktop/discovery-to-java-new/ubnt-discovery-v2.5.1.jar.original): Respaldo original sin modificar.
+* [patch_discovery.py](file:///home/ibarra/Desktop/discovery-to-java-new/patch_discovery.py): Script de parcheo de bytecode en Python.
+* [run.sh](file:///home/ibarra/Desktop/discovery-to-java-new/run.sh): Lanzador para la versión JAR.

@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Ubiquiti Device Discovery Tool",
+  "version": "1.0.0",
+  "description": "Descubre y administra dispositivos Ubiquiti (UniFi, airMAX, EdgeMAX, airFiber) en tu red local.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7LUHgGYVhpzIFB9iQXO9Rpz/8kVhREmmOn9WcKw+P3iWmOA2u00qUJyGVEy39REfl/1+EDbuNpBweX1hdhfgC2m1IQI6OAnhpTGxyfqkpRBi5QBg/rI1sdz8oKr424A/Ez0ZY1mbHWXk46Uf7/ocRnmkyqv7OCoSbEw5BzFPxYIVG/OIKo5F76dQcQCmtZN/ah/6B1fjyW+jUxLGL1tKMsnPTRZXUgifd4SDn5l5c/o1gja/5ybxnLaeQaJZ4Vu7XpLNM9zOBAs0AMICwsZq1jcrnCR++h7wP9bktzNk3E+at3+qsQDBPeD9rPzxqDgxYA9Ktz0q8ORbttmjcJWqqwIDAQAB",
+  "action": {
+    "default_title": "Ubiquiti Discovery Tool",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png",
+    "256": "icons/icon-256x256.png"
+  },
+  "permissions": [
+    "nativeMessaging",
+    "clipboardWrite"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}

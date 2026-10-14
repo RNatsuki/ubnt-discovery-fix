@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ubiquiti Device Discovery Tool</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo-area">
+        <img src="icons/icon-48.png" alt="Ubiquiti" class="ubnt-logo">
+        <div class="header-titles">
+          <h1>Ubiquiti Discovery</h1>
+          <span class="version-tag">v2.5.1 Web</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="btn-export" class="btn btn-secondary" title="Exportar resultados">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Exportar
+        </button>
+        <button id="btn-fullscreen" class="btn btn-secondary" title="Abrir en pestaña completa">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+        </button>
+        <button id="btn-scan" class="btn btn-primary">
+          <svg id="scan-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          <span id="scan-text">Escanear</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Toolbar / Filters -->
+    <div class="toolbar">
+      <div class="search-box">
+        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search-input" placeholder="Filtrar por IP, MAC, Hostname, Modelo, ESSID..." autocomplete="off">
+        <button id="btn-clear-search" class="clear-search hidden">&times;</button>
+      </div>
+      <div class="status-summary">
+        <span class="device-counter" id="device-count">0 dispositivos</span>
+        <span class="scan-status" id="scan-status">Listo</span>
+      </div>
+    </div>
+
+    <!-- Error Banner (if host missing) -->
+    <div id="error-banner" class="error-banner hidden">
+      <div class="error-content">
+        <strong>Conector no detectado:</strong>
+        <span>Ejecuta <code>./install.sh</code> en tu terminal para registrar el host nativo.</span>
+      </div>
+    </div>
+
+    <!-- Main Content Table -->
+    <main class="table-container">
+      <table class="devices-table">
+        <thead>
+          <tr>
+            <th class="col-status"></th>
+            <th class="col-host">Dispositivo</th>
+            <th class="col-model">Modelo</th>
+            <th class="col-ip">Dirección IP</th>
+            <th class="col-mac">MAC Address</th>
+            <th class="col-fw">Firmware</th>
+            <th class="col-uptime">Uptime</th>
+            <th class="col-actions">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="devices-tbody">
+          <!-- Las filas se insertan dinamicamente con JS -->
+        </tbody>
+      </table>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="empty-state">
+        <div class="empty-icon-wrap">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        </div>
+        <h3>Buscando dispositivos en la red...</h3>
+        <p>Asegúrate de estar en el mismo segmento de red o VLAN que tus antenas o equipos Ubiquiti.</p>
+      </div>
+    </main>
+
+    <!-- Modal Detalles -->
+    <div id="modal-details" class="modal-backdrop hidden">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h2 id="modal-title">Detalles del Dispositivo</h2>
+          <button id="btn-close-modal" class="btn-close">&times;</button>
+        </div>
+        <div class="modal-body" id="modal-content">
+          <!-- Contenido del modal -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <span id="footer-network">Puerto UDP: 10001 (Broadcast L2)</span>
+      <span id="footer-timestamp">Último escaneo: Nunca</span>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "com.ubnt.discovery",
+  "description": "Ubiquiti Device Discovery Native Messaging Host",
+  "path": "/home/ibarra/Desktop/discovery-to-java-new/chrome-extension/ubnt_host.py",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://mnhadifepcgolnghpnknpnkfleiogebl/"
+  ]
+}
