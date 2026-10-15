@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
 """
 Script para reparar Ubiquiti Device Discovery Tool (ubnt-discovery-v2.5.1.jar)
-para que sea compatible con Java 9, 11, 17, 21, 27+.
+para que sea compatible con Java 9, 11, 17, 21, 27+ y distribuciones Linux modernas.
 
-Causa del problema original:
-El JAR fue ofuscado antiguamente con yGuard 2.0.3, el cual generaba nombres
-de identificadores ilegales con puntos (ej: "this.super", "int.Object", "private.super")
-en campos y metodos. Las versiones antiguas de Java (Java 8 y anteriores) lo toleraban,
-pero las versiones modernas de la JVM verifican estrictamente la especificacion JVMS 4.2.2,
-arrojando `java.lang.ClassFormatError: Illegal field name ...`.
+Causas de los problemas originales:
+1. JVMS 4.2.2 (Java 9+):
+   El JAR fue ofuscado antiguamente con yGuard 2.0.3, el cual generaba nombres
+   de identificadores ilegales con puntos (ej: "this.super", "int.Object", "private.super")
+   en campos y metodos. Las versiones antiguas de Java (Java 8 y anteriores) lo toleraban,
+   pero las versiones modernas de la JVM verifican estrictamente la especificacion JVMS 4.2.2,
+   arrojando `java.lang.ClassFormatError: Illegal field name ...`.
 
-Este script parchea el constant pool de las clases dentro del archivo JAR reemplazando
-los caracteres de punto '.' en nombres de campos, metodos y NameAndType por guiones bajos '_',
-manteniendo la misma longitud de bytes y estructura del bytecode.
+2. Lanzamiento del Navegador Web en Linux ("Failed launching WEB browser"):
+   En Linux, el JAR original invoca directamente el comando Debian-especifico `sensible-browser`.
+   En distribuciones como Arch Linux, Fedora, RHEL, openSUSE, Alpine, etc., este binario no
+   existe por defecto, provocando el error `Failed launching WEB browser. Please, open http://... manually`.
+   Este script sustituye la referencia a `sensible-browser` por el estandar universal freedesktop `xdg-open`.
 """
 
 import sys
@@ -22,6 +25,10 @@ import struct
 def patch_class(data: bytes) -> bytes:
     if len(data) < 10 or data[:4] != b"\xca\xfe\xba\xbe":
         return data
+
+    # Parche de navegador web: reemplazar sensible-browser (Debian) por xdg-open (estandar Linux)
+    if b"\x01\x00\x10sensible-browser" in data:
+        data = data.replace(b"\x01\x00\x10sensible-browser", b"\x01\x00\x08xdg-open")
 
     minor, major, cp_count = struct.unpack(">HHH", data[4:10])
     idx = 10

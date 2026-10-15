@@ -27,7 +27,9 @@ El instalador se encarga automáticamente de:
 ---
 
 ## ☕ 2. Versión de Escritorio JAR (Java 9, 11, 17, 21, 27+)
-Corrige el error histórico de `ClassFormatError: Illegal field name "this.super"` provocado por ofuscadores antiguos (yGuard 2.0.3) al validar la especificación JVMS §4.2.2 en versiones modernas de Java.
+Corrige dos problemas críticos del JAR original:
+1. **`ClassFormatError: Illegal field name "this.super"`**: Provocado por ofuscadores antiguos (yGuard 2.0.3) al validar la especificación JVMS §4.2.2 en versiones modernas de Java.
+2. **`Failed launching WEB browser. Please, open http://... manually`**: Provocado en Linux porque el código original invoca de forma rígida el comando `sensible-browser` (exclusivo de Debian/Ubuntu). El JAR parcheado utiliza el estándar universal `xdg-open` compatible con cualquier distribución (Arch, Fedora, openSUSE, Debian, Ubuntu, etc.).
 
 ### Ejecución:
 ```bash

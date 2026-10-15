@@ -20,7 +20,14 @@ chmod +x "$HOST_SCRIPT"
 chmod +x "$DIR/run.sh" 2>/dev/null || true
 chmod +x "$DIR/patch_discovery.py" 2>/dev/null || true
 
-# 2. Generar el manifiesto con la ruta absoluta real
+# 2. Configurar compatibilidad de navegador web para Linux (sensible-browser -> xdg-open)
+if ! command -v sensible-browser &>/dev/null && command -v xdg-open &>/dev/null; then
+  mkdir -p "$HOME/.local/bin"
+  ln -sf "$(command -v xdg-open)" "$HOME/.local/bin/sensible-browser"
+  echo " [OK] Enlace de compatibilidad sensible-browser -> xdg-open creado en $HOME/.local/bin"
+fi
+
+# 3. Generar el manifiesto con la ruta absoluta real
 HOST_MANIFEST="$EXT_DIR/$HOST_NAME.json"
 cat > "$HOST_MANIFEST" <<EOF
 {
